@@ -1,0 +1,100 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+
+    <title>The STEM Project</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Custom styles for this template -->
+    <link href="style.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    
+    
+  </head>
+
+  <body>
+
+    <div class="container">
+      <div class="header">
+        <ul class="nav nav-pills pull-right">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="search.html">Search</a></li>
+          <li><a href="about.html">About</a></li>
+        </ul>
+        <h3 class="text-muted">The STEM Project</h3>
+      </div>
+
+      <div class="container">
+        <table class="table " id="table-data">
+          <thead id="headings">
+            <th>University Name</th>
+            <th>Degrees Awarded to Women</th>
+            <th>Total Degrees Awarded</th>
+          </thead>
+        </table>
+      </div>
+
+      <div class="footer">
+        <p>Coded with love at LadyHacks 2014</p>
+      </div>
+      
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+      <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
+      <script type="text/javascript">
+      /* URL parameter parser by http://stackoverflow.com/questions/901115/how-can-i-get-query-string-values-in-javascript */
+      function getParameterByName(name) {
+          name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+          var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+              results = regex.exec(location.search);
+          return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+      }
+      var fields = ['instnm', 'tech_degrees_awarded_to_women', 'total_tech_degrees_awarded'];
+      var data;
+      var url = "http://technoloshe.cartodb.com/api/v2/sql?q=select * from institutions_granted_it_deg_by_gender_2012";
+      var state = getParameterByName('state');
+      var stateQuery = " where stabbr='"+state+"'";
+      var sortBy = " order by tech_degrees_awarded_to_women desc"
+      if(state == '*')
+          stateQuery = "";
+      var rawdata = $.getJSON(url+stateQuery+sortBy, function() {
+          data = jQuery.parseJSON(rawdata.responseText);
+          data = data.rows;
+          var oldTable = document.getElementById('table-data');
+          var newTable = oldTable.cloneNode(true);
+          
+          for(var i = 0; i < data.length; i++) {
+              var tr = document.createElement('tr');
+              for(var j = 0; j < fields.length; j++) {
+                  var td = document.createElement('td');
+                  td.appendChild(document.createTextNode(data[i][fields[j]]));
+                  tr.appendChild(td);
+              }
+              newTable.appendChild(tr);
+          }
+          oldTable.parentNode.replaceChild(newTable, oldTable);
+      });
+      
+      </script>
+
+    </div> <!-- /container -->
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    
+  </body>
+</html>
+
