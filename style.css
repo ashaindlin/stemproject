@@ -6,6 +6,11 @@ body {
   padding-bottom: 20px;
 }
 
+/* Make links purple (overridden for buttons below) */
+a {
+    color: #D175FF;
+}
+
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,
@@ -116,3 +121,4 @@ body {
     margin: auto;
     text-align: center;
 }
+
